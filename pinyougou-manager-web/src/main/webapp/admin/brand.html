@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>品牌管理</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../plugins/angularjs/angular.min.js"></script>
+
+	<!-- 分页组件开始,注意下面两个组件必须放在angularjs组件之后 -->
+	<script src="../plugins/angularjs/pagination.js"></script>
+	<link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+	<!-- 分页组件结束 -->
+
+	<script>
+
+		//使用angularjs:构建 app 模块时引入 pagination模块，前提为前面引入pagination组件，主要用于分页功能实现
+		var app=angular.module('pinyougou',['pagination']);//定义品优购模块
+		app.controller('brandController',function ($scope, $http) {//$scope相当于域，只能用于controller，但是能获得viw里的数据
+            //不分页一次查询所有品牌列表，该方法使用时需要init初始化，或者调用
+            $scope.findAll=function(){
+                $http.get('../brand/findAll.do').success(
+                    function(response){
+                        $scope.list=response;
+                    }
+                );
+            };
+
+            //分页控件配置currentPage:当前页
+			// totalItems :总记录数
+			// itemsPerPage:每页记录数
+			// perPageOptions :分页选项
+			// onChange:当页码变更后自动触发的方法，初始化也将自动触发
+			//页面一加载下面都将执行
+            $scope.paginationConf = {
+                currentPage: 1,
+                totalItems: 10,
+                itemsPerPage: 10,
+                perPageOptions: [10, 20, 30, 40, 50],
+                onChange: function(){
+                    $scope.reloadList();
+                }
+            };
+
+			//刷新列表，该方法页面初始化一加载就被调用
+            $scope.reloadList=function(){
+                //传递参数，执行分页的方法：
+                $scope.search( $scope.paginationConf.currentPage ,  $scope.paginationConf.itemsPerPage );
+            };
+
+            //定义只分页，不能模糊查询执行的方法：
+            $scope.findPage=function(page,size){
+                //$http用于发起异步请求
+                $http.get('../brand/findPage.do?page='+page +'&size='+size).success(
+                    function(response){//response用于接收返回PageResult的json对象
+                        $scope.list=response.row;//显示当前页数据
+                        $scope.paginationConf.totalItems=response.total;//更新总记录数，因为初始化的总记录数默认为10；
+                    }
+                );
+            };
+
+            //添加品牌或修改品牌：
+			$scope.save=function () {
+                var methodName='add';//方法名称
+			    if($scope.entity.id!=null){
+			        //有id为执行修改，没id为新增
+                    methodName='update';//则执行修改方法
+				}
+			    //因为双向绑定$scope.entity既定义了变量，又能获得viw中在文本框输入的entity值
+                $http.post("../brand/"+methodName+".do",$scope.entity).success(
+                    function (response) {
+					if (response.success){
+                        $scope.reloadList();
+					}else {
+					    response.message;
+					}
+                });
+
+            };
+
+			//修改品牌：
+			//先查询出该品牌：
+            $scope.findOne=function (id) {
+                $http.get("../brand/findOne.do?id="+id).success(
+                    function (response) {
+                        $scope.entity=response;
+                });
+
+            };
+
+            //删除选中品牌：
+            $scope.selectIds=[];//定义选中的 ID 数组变量
+			//更新复选
+            $scope.updateSelection = function($event, id) {
+                if($event.target.checked){//如果是被选中,则增加到数组
+                    $scope.selectIds.push( id);
+                }else{
+                    var idx = $scope.selectIds.indexOf(id);
+                    $scope.selectIds.splice(idx, 1);//删除
+                }
+            };
+
+            //根据ID数组删除品牌：
+            $scope.dele=function () {
+                $http.get("../brand/delete.do?ids="+$scope.selectIds).success(
+                    function (response) {
+                        if (response.success){
+                            $scope.reloadList();
+                        }else {
+                            response.message;
+                        }
+                });
+            };
+
+            //分页查询包括模糊查询,这个必须定义添加，不能像add那样，因为这里会出现没有输入任何东西，但必须执行查询工作，
+			//没有定义将报错，定义了null,也不影响查询
+            $scope.searchEntity={};//定义搜索对象
+            //条件查询
+            $scope.search=function(page,size){
+
+                $http.post('../brand/search.do?page='+page +'&size='+size, $scope.searchEntity).success(
+                    function(response){
+                        $scope.list=response.row;//显示当前页数据
+                        $scope.paginationConf.totalItems=response.total;//更新总记录数
+                    }
+                );
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        })
+
+	</script>
+    
+</head>
+<!--使用分页后就不用使用初始化ng-init="findAll(),因为分页用$scope.paginationConf就配置了初始化-->
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="brandController" >
+  <!-- .box-body -->
+                    <div class="box-header with-border">
+                        <h3 class="box-title">品牌管理</h3>
+                    </div>
+
+                    <div class="box-body">
+
+                        <!-- 数据表格 -->
+                        <div class="table-box">
+
+                            <!--工具栏-->
+                            <div class="pull-left">
+                                <div class="form-group form-inline">
+                                    <div class="btn-group">
+										<!--为了每次打开窗口没有遗留上次的数据，我们可以修改新建按钮，对 entity 变量进行清空操作-->
+                                        <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ng-click="entity={}"><i class="fa fa-file-o"></i> 新建</button>
+                                        <button type="button" class="btn btn-default" title="删除" ng-click="dele()">><i class="fa fa-trash-o"></i> 删除</button>
+                                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback">
+									品牌名称:<input ng-model="searchEntity.name"> 品牌首字母:<input ng-model="searchEntity.firstChar">
+									<button  class="btn btn-default" ng-click="reloadList()">查询</button>
+								</div>
+                            </div>
+                            <!--工具栏/-->
+
+			                  <!--数据列表-->
+			                  <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+			                      <thead>
+			                          <tr>
+			                              <th class="" style="padding-right:0px">
+			                                  <input id="selall" type="checkbox" class="icheckbox_square-blue">
+			                              </th> 
+										  <th class="sorting_asc">品牌ID</th>
+									      <th class="sorting">品牌名称</th>									      
+									      <th class="sorting">品牌首字母</th>									     				
+					                      <th class="text-center">操作</th>
+			                          </tr>
+			                      </thead>
+			                      <tbody>
+								  <!--上面使用$scope.list接受了PageResult的row对象，所以使用ng-repeat="entity in list"进行遍历-->
+			                          <tr ng-repeat="entity2 in list">
+			                              <td><input  type="checkbox" ng-click="updateSelection($event,entity2.id)"></td>
+				                          <td>{{entity2.id}}</td>
+									      <td>{{entity2.name}}</td>
+		                                  <td>{{entity2.firstChar}}</td>
+		                                  <td class="text-center">                                   <!--注意"findOne(entity2.id)中的entity2和添加中的entity不一样，entity2由页面一加载就绑定出来,因为在ng-click里面，不需要使用{{}}-->
+		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity2.id)">修改</button>
+		                                  </td>
+			                          </tr>
+			                      </tbody>
+			                  </table>
+
+							<!--数据列表/-->
+							<!--页面的表格下放置分页组件，展现出分页条，自动封装可进行上一页，下一页等各种操作-->
+							<tm-pagination conf="paginationConf"></tm-pagination>
+							 
+                        </div>
+                        <!-- 数据表格 /-->
+                        
+                        
+                        
+                        
+                     </div>
+                    <!-- /.box-body -->
+         
+<!-- 编辑窗口 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">品牌编辑</h3>
+		</div>
+		<div class="modal-body">		
+			<table class="table table-bordered table-striped"  width="800px">
+		      	<tr>
+		      		<td>品牌名称</td>
+		      		<td><input  class="form-control" placeholder="品牌名称" ng-model="entity.name">  </td>
+		      	</tr>		      	
+		      	<tr>
+		      		<td>首字母</td>
+		      		<td><input  class="form-control" placeholder="首字母" ng-model="entity.firstChar">  </td>
+		      	</tr>		      	
+			 </table>				
+		</div>
+		<div class="modal-footer">						
+			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save()">保存</button>
+			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+		</div>
+	  </div>
+	</div>
+</div>
+   
+</body>
+</html>

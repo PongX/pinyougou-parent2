@@ -81,12 +81,19 @@
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
-
         <dependency>
             <groupId>com.pinyougou</groupId>
             <artifactId>pinyougou-sellergoods-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- 加入这两个依赖，解决Page 这个类ClassNotFoundException的问题 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.miemiedev</groupId>
+            <artifactId>mybatis-paginator</artifactId>
         </dependency>
     </dependencies>
 
