@@ -11,14 +11,20 @@
     <link rel="stylesheet" href="../css/style.css">
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-	<script src="../plugins/angularjs/angular.min.js"></script>
 
+	<script src="../plugins/angularjs/angular.min.js"></script>
 	<!-- 分页组件开始,注意下面两个组件必须放在angularjs组件之后 -->
 	<script src="../plugins/angularjs/pagination.js"></script>
 	<link rel="stylesheet" href="../plugins/angularjs/pagination.css">
 	<!-- 分页组件结束 -->
 
-	<script>
+
+	<script type="text/javascript" src="../js/base_pagination.js"></script>
+	<script type="text/javascript" src="../js/service/brandService.js"></script>
+	<script type="text/javascript" src="../js/controller/baseController.js"></script>
+	<script type="text/javascript" src="../js/controller/brandController.js"></script>
+
+<!--	<script>
 
 		//使用angularjs:构建 app 模块时引入 pagination模块，前提为前面引入pagination组件，主要用于分页功能实现
 		var app=angular.module('pinyougou',['pagination']);//定义品优购模块
@@ -130,25 +136,9 @@
                         $scope.paginationConf.totalItems=response.total;//更新总记录数
                     }
                 );
-
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         })
-
-	</script>
+	</script>-->
     
 </head>
 <!--使用分页后就不用使用初始化ng-init="findAll(),因为分页用$scope.paginationConf就配置了初始化-->

@@ -8,11 +8,11 @@ public class PageResult implements Serializable {
 
     private long total;//查询的总记录条数
 
-    private List row;//当前页显示的所有信息集合
+    private List rows;//当前页显示的所有信息集合
 
-    public PageResult(long total, List row) {
+    public PageResult(long total, List rows) {
         this.total = total;
-        this.row = row;
+        this.rows = rows;
     }
 
     public PageResult() {
@@ -26,11 +26,11 @@ public class PageResult implements Serializable {
         this.total = total;
     }
 
-    public List getRow() {
-        return row;
+    public List getRows() {
+        return rows;
     }
 
-    public void setRow(List row) {
-        this.row = row;
+    public void setRows(List rows) {
+        this.rows = rows;
     }
 }

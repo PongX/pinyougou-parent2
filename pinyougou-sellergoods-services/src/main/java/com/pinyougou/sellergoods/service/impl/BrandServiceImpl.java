@@ -10,7 +10,10 @@ import com.pinyougou.pojo.TbBrandExample;
 import com.pinyougou.sellergoods.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
@@ -63,5 +66,12 @@ public class BrandServiceImpl implements BrandService {
         for (long id : ids) {
             brandMapper.deleteByPrimaryKey(id);
         }
+    }
+
+    //用于关联模板中的品牌下拉列表
+    @Override
+    public List<Map> selectOptionList() {
+        List<Map> maps = brandMapper.selectOptionList();
+        return maps;
     }
 }

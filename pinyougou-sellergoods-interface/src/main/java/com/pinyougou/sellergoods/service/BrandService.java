@@ -4,6 +4,7 @@ import com.pinyougou.entity.PageResult;
 import com.pinyougou.pojo.TbBrand;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BrandService {
     //在一个页面查询所有信息：
@@ -25,5 +26,8 @@ public interface BrandService {
 
     //删除选中品牌：
     void delete(long[] ids);
+
+    //用于关联模板中的品牌下拉列表
+    List<Map> selectOptionList();
 
 }

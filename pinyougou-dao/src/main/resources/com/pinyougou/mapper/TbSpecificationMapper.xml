@@ -97,6 +97,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.pinyougou.pojo.TbSpecification" >
+      <!--在插入后立马查收出才添加的id值-->
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+
     insert into tb_specification (id, spec_name)
     values (#{id,jdbcType=BIGINT}, #{specName,jdbcType=VARCHAR})
   </insert>
@@ -161,4 +166,9 @@
     set spec_name = #{specName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <!--用于关联模板中的规格下拉列表-->
+  <select id="selectOptionList" resultType="java.util.Map">
+    select id,spec_name as text from tb_specification
+  </select>
 </mapper>

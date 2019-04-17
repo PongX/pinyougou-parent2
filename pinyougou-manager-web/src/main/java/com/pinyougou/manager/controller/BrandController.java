@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/brand")
 @RestController//相当于controller注解和response注解的合体，response注解可以直接返回json数据回去
@@ -76,5 +77,12 @@ public class BrandController {
             return new Result(false,"删除失败！");
         }
     }
+
+    //用于关联模板中的品牌下拉列表
+    @RequestMapping("/selectOptionList")
+    public List<Map> selectOptionList(){
+       return brandService.selectOptionList();
+    }
+
 
 }
