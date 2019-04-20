@@ -37,12 +37,15 @@
 						<img src="../img/wx_cz.jpg" />
 					</div>
 					<div id="profile" class="tab-pane  active">
-						<form class="sui-form">
+						<!--action="/login"必须为它，因为交给安全框架去处理。安全框架没有配置路径，默认为/login，请求必须为post-->
+						<form class="sui-form" id="loginform" action="/login" method="post">
 							<div class="input-prepend"><span class="add-on loginname"></span>
-								<input id="prependedInput" type="text" placeholder="邮箱/用户名/手机号" class="span2 input-xfat">
+								<!--因为交给安全框架去处理name必须为"username"-->
+								<input id="prependedInput" name="username" type="text" placeholder="邮箱/用户名/手机号" class="span2 input-xfat">
 							</div>
 							<div class="input-prepend"><span class="add-on loginpwd"></span>
-								<input id="prependedInput" type="password" placeholder="请输入密码" class="span2 input-xfat">
+								<!--因为交给安全框架去处理name必须为"password"-->
+								<input id="prependedInput" name="password" type="password" placeholder="请输入密码" class="span2 input-xfat">
 							</div>
 							<div class="setting">
 								 <div id="slider">
@@ -51,7 +54,7 @@
 									</div>
 							</div>
 							<div class="logined">
-								<a class="sui-btn btn-block btn-xlarge btn-danger" href="admin/index.html" target="_blank">登&nbsp;&nbsp;录</a>
+								<a class="sui-btn btn-block btn-xlarge btn-danger" onclick="document:loginform.submit()" target="_blank">登&nbsp;&nbsp;录</a>
 							</div>
 						</form>
 
