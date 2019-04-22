@@ -58,5 +58,18 @@ app.controller('baseController' ,function($scope,){
         }
         return value;
     }
+
+
+    //[{"attributeName":"网络制式","attributeValue":["移动3G","移动4G"]},
+    // {"attributeName":"屏幕尺寸","attributeValue":["6寸","5寸"]}]
+    //从集合中按照 key 查询对象
+    $scope.searchObjectByKey=function(list,key,keyValue){
+        for(var i=0;i<list.length;i++){
+            if(list[i][key]==keyValue){
+                return list[i];//list等于上面的集合,key="attributeName",keyValue="网络制式"，则返回{"attributeName":"网络制式","attributeValue":["移动3G","移动4G"]},
+            }
+        }
+        return null;
+    }
 	
 });	
