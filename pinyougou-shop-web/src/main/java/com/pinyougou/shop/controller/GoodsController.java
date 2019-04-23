@@ -1,5 +1,7 @@
 package com.pinyougou.shop.controller;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.entity.Result;
@@ -66,7 +68,19 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbGoods goods){
+	public Result update(@RequestBody Goods goods){
+	    //出于安全考虑，在商户后台执行的商品修改，必须要校验提交的商品属于该商户
+        //校验是否是当前商家的 id
+        Goods goods2 = goodsService.findOne(goods.getTbGoods().getId());
+        //获取当前登录的商家 ID
+        String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+        //如果传递过来的商家 ID 并不是当前登录的用户的 ID,则属于非法操作
+        if(!goods2.getTbGoods().getSellerId().equals(sellerId)
+                || !goods.getTbGoods().getSellerId().equals(sellerId) ){
+            return new Result(false, "操作非法");
+        }
+
+
 		try {
 			goodsService.update(goods);
 			return new Result(true, "修改成功");
@@ -82,7 +96,7 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public TbGoods findOne(Long id){
+	public Goods findOne(Long id){
 		return goodsService.findOne(id);		
 	}
 	
@@ -104,14 +118,18 @@ public class GoodsController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param
 	 * @param page
 	 * @param rows
 	 * @return
 	 */
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
-		return goodsService.findPage(goods, page, rows);		
+		//获取商家 ID
+		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+		//添加查询条件
+		goods.setSellerId(sellerId);
+		return goodsService.findPage(goods, page, rows);
 	}
 	
 }
