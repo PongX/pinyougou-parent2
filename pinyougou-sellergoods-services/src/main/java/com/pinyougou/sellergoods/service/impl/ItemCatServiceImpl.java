@@ -12,6 +12,7 @@ import com.pinyougou.mapper.TbItemCatMapper;
 import com.pinyougou.pojo.TbItemCat;
 import com.pinyougou.pojo.TbItemCatExample;
 import com.pinyougou.pojo.TbItemCatExample.Criteria;
+import org.springframework.data.redis.core.RedisTemplate;
 
 
 /**
@@ -115,12 +116,21 @@ public class ItemCatServiceImpl implements ItemCatService {
         return new PageResult(page.getTotal(), page.getResult());
     }
 
+    @Autowired
+    private RedisTemplate redisTemplate;
     //通过父id进行逐级展示：
     @Override
     public List<TbItemCat> findByParentId(Long parentId) {
         TbItemCatExample example = new TbItemCatExample();
         Criteria criteria = example.createCriteria();
         criteria.andParentIdEqualTo(parentId);
+        //缓存商品分类数据,以分类名称作为 key ,以模板 ID 作为值
+        //每次执行查询的时候，一次性读取进行缓存 (因为商品分类表每次增删改都要执行此方法)
+        List<TbItemCat> tbItemCats = findAll();
+        for (TbItemCat tbItemCat : tbItemCats) {
+            redisTemplate.boundHashOps("itemCat").put(tbItemCat.getName(),tbItemCat.getTypeId());
+        }
+        System.out.println("更新缓存:商品分类表");
         return itemCatMapper.selectByExample(example);
     }
 

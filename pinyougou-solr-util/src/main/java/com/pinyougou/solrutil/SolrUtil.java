@@ -10,6 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.solr.core.SolrTemplate;
+import org.springframework.data.solr.core.query.Query;
+import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class SolrUtil {
     @Autowired
     private SolrTemplate solrTemplate;
 
+    //添加所有商品状态为1的sku商品进solr
     public void importItemData(){
         TbItemExample example =new TbItemExample();
         TbItemExample.Criteria criteria = example.createCriteria();
@@ -40,9 +43,19 @@ public class SolrUtil {
         System.out.println("商品结束=================");
     }
 
+    //删除所有solr中的数据
+    public void deleteAll(){
+        Query query=new SimpleQuery("*:*");
+        solrTemplate.delete(query);
+        solrTemplate.commit();
+    }
+
     public static void main(String[] args) {
         ApplicationContext context=new ClassPathXmlApplicationContext("classpath*:spring/applicationContext*.xml");
         SolrUtil solrUtil= (SolrUtil) context.getBean("solrUtil");
-        solrUtil.importItemData();
+        //添加所有
+        //solrUtil.importItemData();
+        //删除所有
+        solrUtil.deleteAll();
     }
 }

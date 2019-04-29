@@ -48,7 +48,7 @@
 
     <!-- 引用dubbo 服务 -->
     <dubbo:application name="pinyougou-shop-web" />
-    <dubbo:registry address="zookeeper://192.168.25.130:2181"/>
+    <dubbo:registry address="zookeeper://192.168.25.129:2181"/>
     <dubbo:reference id="sellerService" interface="com.pinyougou.sellergoods.service.SellerService"></dubbo:reference>
 
     <!--修改认证管理器的配置,让登陆时输的密码，能和加密的密码匹配-->
