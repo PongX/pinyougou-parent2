@@ -98,11 +98,21 @@
             <artifactId>pinyougou-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <!--主要为了导入商品审核通过的数据进solr-->
-        <dependency>
+        <!--主要为了导入商品审核通过的数据进solr,使用activeMQ解除耦合-->
+       <!-- <dependency>
             <groupId>com.pinyougou</groupId>
             <artifactId>pinyougou-search-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>-->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+            <version>5.13.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.2.0</version>
         </dependency>
 
 
@@ -127,6 +137,13 @@
             <artifactId>spring-security-config</artifactId>
         </dependency>
 
+        <!--网页静态化,使用activeMQ解除耦合-->
+       <!-- <dependency>
+            <groupId>com.pinyougou</groupId>
+            <artifactId>pinyougou-page-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+-->
     </dependencies>
 
 

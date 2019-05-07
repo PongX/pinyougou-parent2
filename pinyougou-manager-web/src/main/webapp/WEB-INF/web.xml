@@ -39,7 +39,7 @@
   <!--登陆验证配置：-->
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:spring/spring-security.xml</param-value>
+    <param-value>classpath:spring/spring-*.xml</param-value>
   </context-param>
 
   <listener>

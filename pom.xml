@@ -23,6 +23,11 @@
         <module>pinyougou-search-interface</module>
         <module>pinyougou-search-service</module>
         <module>pinyougou-search-web</module>
+        <module>pinyougou-page-interface</module>
+        <module>pinyougou-page-service</module>
+        <module>pinyougou-user-interface</module>
+        <module>pinyougou-user-service</module>
+        <module>pinyougou-user-web</module>
     </modules>
     <!-- 集中定义依赖版本号 -->
     <properties>
