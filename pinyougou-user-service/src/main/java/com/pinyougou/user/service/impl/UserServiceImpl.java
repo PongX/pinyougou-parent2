@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private RedisTemplate redisTemplate;
 
-	@Autowired
+	/*@Autowired
 	private JmsTemplate jmsTemplate;
 
 	@Autowired
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
 	private String template_code;
 
 	@Value("${sign_name}")
-	private String sign_name;
+	private String sign_name;*/
 
 	//根据用户注册的手机号发送验证码
 	@Override
@@ -179,7 +179,7 @@ public class UserServiceImpl implements UserService {
 		System.out.println("验证码："+code);
 		//将随机生成的验证码存入缓存
 		redisTemplate.boundHashOps("smscode").put(phone,code);
-		//发送到 activeMQ
+		/*//发送到 activeMQ
 		jmsTemplate.send(smsDestination, new MessageCreator() {
 			@Override
 			public Message createMessage(Session session) throws JMSException {
@@ -192,7 +192,7 @@ public class UserServiceImpl implements UserService {
 				message.setString("param", JSON.toJSONString(map));
 				return message;
 			}
-		});
+		});*/
 
 
 

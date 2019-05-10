@@ -31,6 +31,13 @@
             <artifactId>spring-data-redis</artifactId>
         </dependency>
 
+        <!--购物车cookie的创建以及读取-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 
