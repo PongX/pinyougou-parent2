@@ -9,8 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pinyougou-cart-web</artifactId>
+    <artifactId>pinyougou-pay-service</artifactId>
     <packaging>war</packaging>
+
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -79,79 +80,28 @@
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.pinyougou</groupId>
-            <artifactId>pinyougou-cart-interface</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <!-- 加入这两个依赖，解决Page 这个类ClassNotFoundException的问题 -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.miemiedev</groupId>
-            <artifactId>mybatis-paginator</artifactId>
-        </dependency>
 
-        <!-- 身份验证 -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-        </dependency>
-
-        <!--Spring Security与CAS集成 和 cas 客户端-->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-cas</artifactId>
-            <version>4.1.0.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jasig.cas.client</groupId>
-            <artifactId>cas-client-core</artifactId>
-            <version>3.3.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>log4j-over-slf4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!--引入工具类-->
-        <dependency>
-            <groupId>com.pinyougou</groupId>
-            <artifactId>pinyougou-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <!--用于结算页-收件人地址选择-->
-        <dependency>
-            <groupId>com.pinyougou</groupId>
-            <artifactId>pinyougou-user-interface</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <!--用于点击订单结算页的提交订单-->
-        <dependency>
-            <groupId>com.pinyougou</groupId>
-            <artifactId>pinyougou-order-interface</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <!--用于微信支付-->
         <dependency>
             <groupId>com.pinyougou</groupId>
             <artifactId>pinyougou-pay-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>com.pinyougou</groupId>
+            <artifactId>pinyougou-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
+        <!--微信支付SDK-->
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+
+
+    </dependencies>
 
     <build>
         <plugins>
@@ -161,7 +111,7 @@
                 <version>2.2</version>
                 <configuration>
                     <!-- 指定端口 -->
-                    <port>9107</port>
+                    <port>9000</port>
                     <!-- 请求路径 -->
                     <path>/</path>
                 </configuration>

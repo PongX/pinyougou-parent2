@@ -7,6 +7,7 @@ import com.pinyougou.entity.Result;
 import com.pinyougou.pojogroup.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import util.CookieUtil;
@@ -82,7 +83,15 @@ public class CartController {
 
     //添加商品到购物车
     @RequestMapping("/addGoodsToCartList")
+    //springMVC 的版本在 4.2 或以上版本，可以使用注解实现跨域, 我们只需要在需要跨域的方
+    //法上添加注解@CrossOrigin 即可,allowCredentials="true" 可以省略
+    @CrossOrigin(origins = "http://localhost:9105",allowCredentials = "true")
     public Result addGoodsToCartList(Long itemId, Integer num) {
+        //解决js跨域的问题Access-Control-Allow-Origin 是 HTML5 中定义的一种解决资源跨域的策略。
+        //他是通过服务器端返回带有 Access-Control-Allow-Origin 标识的 Response header，用来解决资源的跨域权限问题。
+        //response.setHeader("Access-Control-Allow-Origin", "http://localhost:9105");
+        //如果不操作cookie下面就不用设置
+        //response.setHeader("Access-Control-Allow-Credentials", "true");
         //得到登陆人账号,判断当前是否有人登陆
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println("当前用户："+username);
